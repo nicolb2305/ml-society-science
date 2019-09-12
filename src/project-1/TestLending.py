@@ -30,7 +30,7 @@ def test_decision_maker(X_test, y_test, interest_rate, decision_maker):
         if (action==1):
             if (good_loan != 1):
                 utility -= amount
-            else:    
+            else:
                 utility += amount*(pow(1 + interest_rate, duration) - 1)
     return utility
 
@@ -44,7 +44,7 @@ def test_decision_maker(X_test, y_test, interest_rate, decision_maker):
 import aleksaw_banker
 decision_maker = aleksaw_banker.AlexBanker()
 
-interest_rate = 0.05
+interest_rate = 0.005
 
 ### Do a number of preliminary tests by splitting the data in parts
 from sklearn.model_selection import train_test_split
@@ -57,5 +57,3 @@ for iter in range(n_tests):
     utility += test_decision_maker(X_test, y_test, interest_rate, decision_maker)
 
 print(utility / n_tests)
-
-
