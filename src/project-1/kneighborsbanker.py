@@ -6,7 +6,7 @@ from sklearn import preprocessing
 
 
 class KNeighborsBanker(BankerBase):
-    def __init__(self, interest_rate, k=15):
+    def __init__(self, interest_rate, k=30):
         self.interest_rate = interest_rate
         self.k = k
 

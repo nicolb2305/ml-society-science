@@ -12,7 +12,6 @@ class RandomForestBanker(BankerBase):
     def fit(self, X, y):
         self.classifier = RandomForestClassifier(n_estimators=self.n_estimators)
         self.classifier.fit(X, y)
-        print(X.columns)
 
     def get_expected_utility(self, X):
       pr_1, pr_2 = self.predict_proba(X).T
