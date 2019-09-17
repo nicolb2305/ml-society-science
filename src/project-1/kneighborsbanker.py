@@ -2,7 +2,6 @@ from banker import BankerBase, run
 from sklearn.neighbors import KNeighborsClassifier
 import pandas
 import random
-from sklearn import preprocessing
 
 
 class KNeighborsBanker(BankerBase):
@@ -16,11 +15,6 @@ class KNeighborsBanker(BankerBase):
         self.std = X.iloc[:, -7:-1].std()
         X_copy = X.copy()
         X_copy.update((X_copy.iloc[:, -7:-1]-self.mean)/self.std)
-        """
-        self.scaler = preprocessing.Normalizer().fit(X.iloc[:, -7:-1])
-        X.loc[:, -7:-1] = self.scaler.transform(X.iloc[:, -7:-1])
-        print(X.head())
-        """
         self.classifier.fit(X_copy, y)
 
     def get_expected_utility(self, X):
@@ -29,11 +23,7 @@ class KNeighborsBanker(BankerBase):
       pr_1, pr_2 = self.predict_proba(X).T
       U_1 = X_amount*( (1+self.interest_rate)**X_duration - 1)
       U_2 = -X_amount
-      #print(f"{pr_1} {pr_2} {U_1} {U_2} {X['duration']} {pr_1*U_1 + pr_2*U_2}")
       return pr_1*U_1 + pr_2*U_2
-
-    def get_proba(self):
-      return random.random()
 
     def predict_proba(self, X):
       if isinstance(X, pandas.core.series.Series):

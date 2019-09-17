@@ -33,7 +33,6 @@ def get_data():
 
 
 def calculate_gain(X, interest_rate):
-    #return X['amount']*((1 + interest_rate)**(X['duration']/12) - 1)
     return X['amount']*((1 + interest_rate)**(X['duration']) - 1)
 
 
@@ -57,11 +56,9 @@ def get_average_utility(banker,  interest_rate, n_folds=50):
     utils = cross_val_score(banker, DataHolder.X, DataHolder.y,
                             scoring=UtilityCalculator(interest_rate),
                             cv=n_folds)
-    #print(utils)
     return utils.mean(), utils.std()
 
 
-#def run(interest_rate=0.05):
 def run(interest_rate=0.005):
     for cls in BankerBase.__subclasses__():
         print(cls.__name__, get_average_utility(
