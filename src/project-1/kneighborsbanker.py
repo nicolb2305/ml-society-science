@@ -12,21 +12,23 @@ class KNeighborsBanker(BankerBase):
 
     def fit(self, X, y):
         self.classifier = KNeighborsClassifier(n_neighbors=self.k)
-        self.max = X.iloc[:, -7:-1].max()
-        self.min = X.iloc[:, -7:-1].min()
+        self.mean = X.iloc[:, -7:-1].mean()
+        self.std = X.iloc[:, -7:-1].std()
         X_copy = X.copy()
-        X_copy.update((X.iloc[:, -7:-1]-self.min)/(self.max-self.min))
+        X_copy.update((X_copy.iloc[:, -7:-1]-self.mean)/self.std)
         """
         self.scaler = preprocessing.Normalizer().fit(X.iloc[:, -7:-1])
         X.loc[:, -7:-1] = self.scaler.transform(X.iloc[:, -7:-1])
         print(X.head())
         """
-        self.classifier.fit(X, y)
+        self.classifier.fit(X_copy, y)
 
     def get_expected_utility(self, X):
+      X_amount = X['amount']
+      X_duration = X['duration']
       pr_1, pr_2 = self.predict_proba(X).T
-      U_1 = X['amount']*( (1+self.interest_rate)**X['duration'] - 1)
-      U_2 = -X['amount']
+      U_1 = X_amount*( (1+self.interest_rate)**X_duration - 1)
+      U_2 = -X_amount
       #print(f"{pr_1} {pr_2} {U_1} {U_2} {X['duration']} {pr_1*U_1 + pr_2*U_2}")
       return pr_1*U_1 + pr_2*U_2
 
@@ -34,10 +36,12 @@ class KNeighborsBanker(BankerBase):
       return random.random()
 
     def predict_proba(self, X):
-      X.update((X.iloc[:, -7:-1]-self.min)/(self.max-self.min))
       if isinstance(X, pandas.core.series.Series):
-        return self.classifier.predict_proba(X.to_frame().transpose())
-      return self.classifier.predict_proba(X)
+        X_copy = X.copy().to_frame().transpose()
+      else:
+        X_copy = X.copy()
+      X_copy.update((X_copy.iloc[:, -7:-1]-self.mean)/self.std)
+      return self.classifier.predict_proba(X_copy)
 
     def get_best_action(self, X):
       if isinstance(X, pandas.core.series.Series):
