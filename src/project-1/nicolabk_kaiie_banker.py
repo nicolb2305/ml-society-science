@@ -1,30 +1,35 @@
 from banker import BankerBase, run
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 import pandas
 import random
-from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.model_selection import cross_val_score
+import numpy as np
 
 
-class KNeighborsBanker(BankerBase):
-    def __init__(self, interest_rate=0.005, k=50):
+class Nicolabk_Kaiie_Banker(BankerBase):
+    def __init__(self, interest_rate=0.005):
         self.interest_rate = interest_rate
-        self.k = k
+        self.best_n = None
 
     def set_interest_rate(self, interest_rate):
         self.interest_rate = interest_rate
 
     def fit(self, X, y):
-        feature_selector = SelectKBest(score_func=chi2, k=10)
-        feature_selector.fit(X, y)
-        self.features = X.columns[feature_selector.get_support()]
-        self.classifier = KNeighborsClassifier(n_neighbors=self.k)
-        X = X.copy()[self.features]
-        # Standardize non-categorical features
-        self.mean = X[X.columns[X.dtypes == 'int64']].mean()
-        self.std = X[X.columns[X.dtypes == 'int64']].std()
-        X_copy = X.copy()
-        X_copy.update((X[X.columns[X.dtypes == 'int64']]-self.mean)/self.std)
-        self.classifier.fit(X_copy, y)
+        if not self.best_n:
+            n_estimators = range(50, 125, 25)
+            clfs = [RandomForestClassifier(n_estimators=n) for n in n_estimators]
+            scores = [np.mean(cross_val_score(clf, X, y, cv=40, scoring=self.utility_scoring, n_jobs=-1)) for clf in clfs]
+            self.best_n = n_estimators[np.argmax(np.array(scores))]
+            print(f"n_estimators: {self.best_n}")
+        self.classifier = RandomForestClassifier(n_estimators=self.best_n, n_jobs=-1)
+        self.classifier.fit(X, y)
+
+    def utility_scoring(self, estimator, X, y):
+        estimator.fit(X, y)
+        pr_1, pr_2 = estimator.predict_proba(X).T
+        U_1 = X['amount']*( (1+self.interest_rate)**X['duration'] - 1)
+        U_2 = -X['amount']
+        return sum(pr_1*U_1 + pr_2*U_2)
 
     def expected_utility(self, X):
         pr_1, pr_2 = self.predict_proba(X).T
@@ -33,14 +38,11 @@ class KNeighborsBanker(BankerBase):
         return pr_1*U_1 + pr_2*U_2
 
     def predict_proba(self, X):
-        X = X.copy()[self.features]
         # Convert series to dataframe (banker.py sends dataframes while TestLending.py sends series)
         if isinstance(X, pandas.core.series.Series):
             X_copy = X.copy().to_frame().transpose()
         else:
             X_copy = X.copy()
-        # Standardize new X values
-        X_copy.update((X_copy[X_copy.columns[X_copy.dtypes == 'int64']]-self.mean)/self.std)
         return self.classifier.predict_proba(X_copy)
 
     def get_best_action(self, X):
@@ -58,6 +60,11 @@ class KNeighborsBanker(BankerBase):
                 else:
                     actions.append(2)
         return pandas.Series(actions, index = X.index)
+
+    def get_diff_privacy(self, y, epsilon=0.1):
+        central_sensitivity = 1/len(y)
+        central_noise = np.random.laplace(scale=central_sensitivity/epsilon)
+        return np.bincount(y)[1] / len(y) + central_noise
 
 if __name__ == '__main__':
     run()
