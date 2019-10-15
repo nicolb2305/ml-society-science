@@ -1,4 +1,5 @@
 import pandas
+from sklearn.utils import shuffle
 from sklearn.model_selection import cross_val_score
 
 
@@ -22,6 +23,7 @@ def get_data():
             'job', 'persons', 'phone', 'foreign']
     target = 'repaid'
     df = pandas.read_csv('../../data/credit/german.data', sep=' ', names=features+[target])
+    df = shuffle(df)
     numeric_colums = df.columns[df.dtypes == 'int64']
     categorical_columns = df.columns[df.dtypes == 'object']
     dummies = pandas.get_dummies(df[categorical_columns], drop_first=True)
