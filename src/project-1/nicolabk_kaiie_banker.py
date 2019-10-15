@@ -22,7 +22,7 @@ class Nicolabk_Kaiie_Banker(BankerBase):
     def fit(self, X, y):
         n_estimators = range(50, 125, 25)
         clfs = [RandomForestClassifier(n_estimators=n) for n in n_estimators]
-        scores = [np.mean(cross_val_score(clf, X, y, cv=40, scoring=self.utility_scoring, n_jobs=-1)) for clf in clfs]
+        scores = [np.mean(cross_val_score(clf, X, y, cv=10, scoring=self._utility_scoring, n_jobs=-1)) for clf in clfs]
         best_n = n_estimators[np.argmax(np.array(scores))]
         self.classifier = RandomForestClassifier(n_estimators=best_n, n_jobs=-1)
         if self.epsilon:
@@ -30,13 +30,6 @@ class Nicolabk_Kaiie_Banker(BankerBase):
             for column in X.columns[X.dtypes == 'int64']:
                 self.sensitivity[column] = X[column].max()-X[column].min()
         self.classifier.fit(X, y)
-
-    def utility_scoring(self, estimator, X, y):
-        estimator.fit(X, y)
-        pr_1, pr_2 = estimator.predict_proba(X).T
-        U_1 = X['amount']*( (1+self.interest_rate)**X['duration'] - 1)
-        U_2 = -X['amount']
-        return sum(pr_1*U_1 + pr_2*U_2)
 
     def expected_utility(self, X):
         pr_1, pr_2 = self.predict_proba(X).T
@@ -70,6 +63,13 @@ class Nicolabk_Kaiie_Banker(BankerBase):
                 else:
                     actions.append(2)
         return pandas.Series(actions, index = X.index)
+
+    def _utility_scoring(self, estimator, X, y):
+        estimator.fit(X, y)
+        pr_1, pr_2 = estimator.predict_proba(X).T
+        U_1 = X['amount']*( (1+self.interest_rate)**X['duration'] - 1)
+        U_2 = -X['amount']
+        return sum(pr_1*U_1 + pr_2*U_2)
 
     def _privacy(self, X):
         X_private = X.copy()
@@ -108,11 +108,7 @@ class Nicolabk_Kaiie_Banker(BankerBase):
             X[choice] = 1
 
     def _laplace_mechanism(self, X, sensitivity):
-        try:
-            size = X.size
-        except:
-            size = None
-        noise = np.random.laplace(scale=sensitivity/self.epsilon, size=size)
+        noise = np.random.laplace(scale=sensitivity/self.epsilon, size=X.size)
         X += noise
 
 if __name__ == '__main__':

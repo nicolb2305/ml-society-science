@@ -1,4 +1,5 @@
 import pandas
+import numpy as np
 
 ## Set up for dataset
 features = ['checking account balance', 'duration', 'credit history',
@@ -43,19 +44,19 @@ def test_decision_maker(X_test, y_test, interest_rate, decision_maker):
 #import random_banker # this is a random banker
 #decision_maker = random_banker.RandomBanker()
 import nicolabk_kaiie_banker
-decision_maker = nicolabk_kaiie_banker.Nicolabk_Kaiie_Banker(epsilon=100)
+decision_maker = nicolabk_kaiie_banker.Nicolabk_Kaiie_Banker(epsilon=75)
 
 interest_rate = 0.005
 
 ### Do a number of preliminary tests by splitting the data in parts
 from sklearn.model_selection import train_test_split
-n_tests = 100
-utility = 0
+n_tests = 10
+utility = []
 for iter in range(n_tests):
     X_train, X_test, y_train, y_test = train_test_split(X[encoded_features], X[target], test_size=0.2)
     decision_maker.set_interest_rate(interest_rate)
     decision_maker.fit(X_train, y_train)
-    utility += test_decision_maker(X_test, y_test, interest_rate, decision_maker)
-    print(utility)
+    utility.append(test_decision_maker(X_test, y_test, interest_rate, decision_maker))
     print(iter)
-print(utility / n_tests)
+print(sum(utility) / n_tests)
+print(np.std(utility))
