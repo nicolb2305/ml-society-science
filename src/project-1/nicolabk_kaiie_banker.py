@@ -5,23 +5,30 @@ import random
 from sklearn.model_selection import cross_val_score
 import numpy as np
 
+#pandas.set_option('display.max_columns', None)
+pandas.set_option('mode.chained_assignment', None)
 
 class Nicolabk_Kaiie_Banker(BankerBase):
-    def __init__(self, interest_rate=0.005):
+    def __init__(self, interest_rate=0.005, epsilon=None):
         self.interest_rate = interest_rate
-        self.best_n = None
+        if epsilon:
+            self.epsilon = epsilon/20
+        else:
+            self.epsilon = epsilon
 
     def set_interest_rate(self, interest_rate):
         self.interest_rate = interest_rate
 
     def fit(self, X, y):
-        if not self.best_n:
-            n_estimators = range(50, 125, 25)
-            clfs = [RandomForestClassifier(n_estimators=n) for n in n_estimators]
-            scores = [np.mean(cross_val_score(clf, X, y, cv=40, scoring=self.utility_scoring, n_jobs=-1)) for clf in clfs]
-            self.best_n = n_estimators[np.argmax(np.array(scores))]
-            print(f"n_estimators: {self.best_n}")
-        self.classifier = RandomForestClassifier(n_estimators=self.best_n, n_jobs=-1)
+        n_estimators = range(50, 125, 25)
+        clfs = [RandomForestClassifier(n_estimators=n) for n in n_estimators]
+        scores = [np.mean(cross_val_score(clf, X, y, cv=40, scoring=self.utility_scoring, n_jobs=-1)) for clf in clfs]
+        best_n = n_estimators[np.argmax(np.array(scores))]
+        self.classifier = RandomForestClassifier(n_estimators=best_n, n_jobs=-1)
+        if self.epsilon:
+            self.sensitivity = {}
+            for column in X.columns[X.dtypes == 'int64']:
+                self.sensitivity[column] = X[column].max()-X[column].min()
         self.classifier.fit(X, y)
 
     def utility_scoring(self, estimator, X, y):
@@ -43,6 +50,9 @@ class Nicolabk_Kaiie_Banker(BankerBase):
             X_copy = X.copy().to_frame().transpose()
         else:
             X_copy = X.copy()
+
+        if self.epsilon:
+            X_copy = self._privacy(X_copy)
         return self.classifier.predict_proba(X_copy)
 
     def get_best_action(self, X):
@@ -61,10 +71,49 @@ class Nicolabk_Kaiie_Banker(BankerBase):
                     actions.append(2)
         return pandas.Series(actions, index = X.index)
 
-    def get_diff_privacy(self, y, epsilon=0.1):
-        central_sensitivity = 1/len(y)
-        central_noise = np.random.laplace(scale=central_sensitivity/epsilon)
-        return np.bincount(y)[1] / len(y) + central_noise
+    def _privacy(self, X):
+        X_private = X.copy()
+        for column in self.sensitivity:
+            self._laplace_mechanism(X_private[column], self.sensitivity[column])
+        cat_col = sorted(list(set(X.columns) - set(self.sensitivity.keys())))
+        cat_grouped = []
+        prev = ""
+        for cat in cat_col:
+            split = cat.split('_')[0]
+            if split == prev:
+                cat_grouped[-1].append(cat)
+            else:
+                cat_grouped.append([cat])
+            prev = split
+
+        for cat in cat_grouped:
+            self._exponential(X_private, cat)
+        return X_private
+
+
+    def _exponential(self, X, category):
+        quality = np.zeros(len(category)+1)
+        for i in range(len(category)):
+            if X[category[i]].iloc[0] == 1:
+                quality[i+1] = 1
+                X[category[i]].iloc[0] = 0
+                break
+
+        if np.count_nonzero(quality) == 0:
+            quality[0] = 1
+
+        pr_cat = np.exp(self.epsilon*quality)/sum(np.exp(self.epsilon*quality))
+        choice = np.random.choice(['filler'] + category, p=pr_cat)
+        if choice != 'filler':
+            X[choice] = 1
+
+    def _laplace_mechanism(self, X, sensitivity):
+        try:
+            size = X.size
+        except:
+            size = None
+        noise = np.random.laplace(scale=sensitivity/self.epsilon, size=size)
+        X += noise
 
 if __name__ == '__main__':
     run()

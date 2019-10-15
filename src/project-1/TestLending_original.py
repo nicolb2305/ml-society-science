@@ -43,7 +43,7 @@ def test_decision_maker(X_test, y_test, interest_rate, decision_maker):
 #import random_banker # this is a random banker
 #decision_maker = random_banker.RandomBanker()
 import nicolabk_kaiie_banker
-decision_maker = nicolabk_kaiie_banker.Nicolabk_Kaiie_Banker()
+decision_maker = nicolabk_kaiie_banker.Nicolabk_Kaiie_Banker(epsilon=100)
 
 interest_rate = 0.005
 
@@ -56,5 +56,6 @@ for iter in range(n_tests):
     decision_maker.set_interest_rate(interest_rate)
     decision_maker.fit(X_train, y_train)
     utility += test_decision_maker(X_test, y_test, interest_rate, decision_maker)
+    print(utility)
     print(iter)
 print(utility / n_tests)
