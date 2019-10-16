@@ -6,11 +6,7 @@ from sklearn.feature_selection import SelectKBest, chi2
 
 
 class KNeighborsBanker(BankerBase):
-<<<<<<< HEAD
-    def __init__(self, interest_rate, k=30):
-=======
     def __init__(self, interest_rate=0.005, k=50):
->>>>>>> de4241e9ae0d1d50fbb248746bc7f36009ea23ce
         self.interest_rate = interest_rate
         self.k = k
 
