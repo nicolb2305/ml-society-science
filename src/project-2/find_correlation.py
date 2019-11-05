@@ -26,6 +26,8 @@ plt.title(r'$\chi^2$-test statistic between $x_1:x_{128}$ and $x_{129}, x_{130}$
 plt.legend()
 plt.savefig('chi2_statistic.png')
 
+print(pandas.crosstab(X[:, 5], X[:, 128]))
+
 chi2s = np.array(chi2s)
 best_0 = np.argpartition(chi2s[0], -10)[-10:]
 best_1 = np.argpartition(chi2s[1], -10)[-10:]
