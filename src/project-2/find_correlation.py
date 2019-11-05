@@ -26,7 +26,12 @@ plt.title(r'$\chi^2$-test statistic between $x_1:x_{128}$ and $x_{129}, x_{130}$
 plt.legend()
 plt.savefig('chi2_statistic.png')
 
-for i in range(2):
-    for j in range(128):
-        if chi2s[i][j] >= 1000:
-            print(f'{f"X{j+1} is important for symptom X{129+i}":>34s}')
+chi2s = np.array(chi2s)
+best_0 = np.argpartition(chi2s[0], -10)[-10:]
+best_1 = np.argpartition(chi2s[1], -10)[-10:]
+
+for i in best_0:
+    print(f'{f"X{i+1} is important for symptom X129":>34s} (chi-squared-test statistic: {chi2s[0][i]:.2f})')
+
+for i in best_1:
+    print(f'{f"X{i+1} is important for symptom X130":>34s} (chi-squared-test statistic: {chi2s[1][i]:.2f})')
