@@ -105,6 +105,7 @@ if __name__ == "__main__":
         sample = resample(AY, replace=True)
         utilities[i] = recommender.estimate_utility(None, sample[:, 0], sample[:, 1])
     quantiles = np.quantile(utilities, [0.025, 0.975])
+    print(f"95% error bounds: {quantiles}")
     plt.hist(utilities, bins=30)
     plt.title("Utilities from 10000 bootstrap samples")
     plt.xlabel("Utility")
