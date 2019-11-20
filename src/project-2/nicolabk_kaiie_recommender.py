@@ -53,8 +53,17 @@ class NicolabkKaiieRecommender:
                 else:
                     return return_value
 
-            def get_action_probability(self, data):
-                return None
+            # Predict best action based on expected utility of each action
+            def get_best_action(self, data):
+                placebo_effect_proba = self.predict_proba(data, 0)
+                treatment_effect_proba = self.predict_proba(data, 1)
+                placebo_utility = 0*placebo_effect_proba[0] + 1*placebo_effect_proba[1]
+                treatment_utility = -0.1*treatment_effect_proba[0] + 0.9*treatment_effect_proba[1]
+
+                if placebo_utility > treatment_utility:
+                    return 0
+                else:
+                    return 1
 
         model = Policy(LogisticRegression(solver='sag'), LogisticRegression(solver='sag'))
         model.fit_models(data, actions, outcome)
@@ -68,11 +77,7 @@ class NicolabkKaiieRecommender:
             pi_hat = actions.value_counts()/actions.size
             recommendations = np.zeros(actions.size)
             for i in range(actions.size):
-                placebo_effect_proba = policy.predict_proba(data.iloc[i], 0)
-                treatment_effect_proba = policy.predict_proba(data.iloc[i], 1)
-                placebo_utility = 0*placebo_effect_proba[0] + 1*placebo_effect_proba[1]
-                treatment_utility = -0.1*treatment_effect_proba[0] + 0.9*treatment_effect_proba[1]
-                recommendations[i] = np.argmax(np.column_stack((placebo_utility, treatment_utility)), axis=1)
+                recommendations[i] = policy.get_best_action(data.iloc[i])
             return np.sum(outcome * recommendations / actions.map(pi_hat))#.mean()
 
     def predict_proba(self, data, treatment):
