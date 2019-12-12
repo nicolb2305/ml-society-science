@@ -26,14 +26,28 @@ plt.title(r'$\chi^2$-test statistic between $x_1:x_{128}$ and $x_{129}, x_{130}$
 plt.legend()
 plt.savefig('chi2_statistic.png')
 
-print(pandas.crosstab(X[:, 5], X[:, 128]))
+#print(pandas.crosstab(X[:, 5], X[:, 128]))
 
-chi2s = np.array(chi2s)
-best_0 = np.argpartition(chi2s[0], -10)[-10:]
-best_1 = np.argpartition(chi2s[1], -10)[-10:]
+#Benjamini, Y.&Hochberg, Y.(1995). Controlling the false discovery rate:a practical and powerful approach to multiple testing.Journal of the RoyalStatistical Society. Series B (Methodological), 289–300.
 
-for i in best_0:
-    print(f'{f"X{i+1} is important for symptom X129":>34s} (chi-squared-test statistic: {chi2s[0][i]:.2f})')
+sorted_features = np.argsort(ps, axis=1)
+M = 127
+q = 0.05 # FDR, False Discovery Rate
+significant_features = [[], []]
 
-for i in best_1:
-    print(f'{f"X{i+1} is important for symptom X130":>34s} (chi-squared-test statistic: {chi2s[1][i]:.2f})')
+for i in range(2):
+    for j in range(128):
+        if ps[i][sorted_features[i][j]] < q*(j+1)/M:
+            significant_features[i].append(sorted_features[i][j])
+        else:
+            break
+
+insignificant_features = [
+    [x for x in range(1, 129) if x not in significant_features[0]],
+    [x for x in range(1, 129) if x not in significant_features[1]]
+]
+
+print(f"Significant features for X_129 with false discovery rate {q}:\n{sorted(significant_features[0])}\n")
+print(f"Non-significant features for X_129 with false discovery rate {q}:\n{sorted(insignificant_features[0])}\n")
+print(f"Significant features for X_130 with false discovery rate {q}:\n{sorted(significant_features[1])}\n")
+print(f"Non-significant features for X_129 with false discovery rate {q}:\n{sorted(insignificant_features[1])}")

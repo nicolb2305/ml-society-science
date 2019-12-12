@@ -27,8 +27,8 @@ labels = features[:,128] + features[:,129]*2
 import data_generation
 import random_recommender
 policy_factory = random_recommender.RandomRecommender
-import reference_recommender
-policy_factory = reference_recommender.HistoricalRecommender
+import adaptive_recommender
+policy_factory = adaptive_recommender.AdaptiveRecommender
 
 ## First test with the same number of treatments
 print("---- Testing with only two treatments ----")
@@ -64,7 +64,3 @@ result = test_policy(generator, policy, default_reward_function, n_tests)
 print("Total reward:", result)
 print("Final analysis of results")
 policy.final_analysis()
-
-
-
-
