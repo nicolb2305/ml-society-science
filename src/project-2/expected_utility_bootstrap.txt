@@ -1,2 +1,2 @@
 Estimated utility: 1191.2
-95% error bounds: [1127.7 1253.7]
+95% error bounds: [1128.2 1255.1]
