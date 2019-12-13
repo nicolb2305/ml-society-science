@@ -19,13 +19,13 @@ class ImprovedRecommender(RandomRecommender):
 
     def estimate_utility(self, data, actions, outcome, policy=None):
         if not policy:
-            return np.sum(self.reward(actions, outcome))/len(actions)
+            return np.sum(self.reward(actions, outcome))
         else:
             pi_hat = actions.value_counts()/actions.size
             recommendations = np.zeros(actions.size)
             for i in range(actions.size):
                 recommendations[i] = policy.get_best_action(data.iloc[i], [self.predict_proba(data.iloc[i], a) for a in range(self.n_actions)])
-            return np.sum(self.reward(recommendations, outcome) * recommendations / actions.map(pi_hat))/len(actions)
+            return np.sum(self.reward(recommendations, outcome) * recommendations / actions.map(pi_hat))
 
     def predict_proba(self, data, treatment):
         return self.models[treatment].predict_proba(pandas.DataFrame(data).transpose())
