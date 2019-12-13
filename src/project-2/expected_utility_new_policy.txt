@@ -1,3 +1,3 @@
 Fitting treatment outcomes
-Utility of historical data: 0.11912
-Estimated utility of historical data with new policy: 0.46430933924908224
+Utility of historical data: 1191.2
+Estimated utility of historical data with new policy: 4642.528395075121
