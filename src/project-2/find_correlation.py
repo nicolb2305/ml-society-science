@@ -13,7 +13,6 @@ for i in [128, 129]:
     for j in range(128):
         contingency = pandas.crosstab(X[:, j], X[:, i]).values
         chi2, p, dof, ex = chi2_contingency(contingency)
-        # print(f'X_{j}, X_{i}: chi2={chi2:10.3f}, p={p:.5e}')
         chi2s[-1].append(chi2)
         ps[-1].append(p)
         print(f'{(100*j)//256 + (0 if i == 128 else 50)}%', end='\r')
@@ -25,10 +24,6 @@ plt.xticks(range(1, 129, 8), [fr'$x_{"{"}{i}{"}"}$' for i in range(1, 129, 8)])
 plt.title(r'$\chi^2$-test statistic between $x_1:x_{128}$ and $x_{129}, x_{130}$')
 plt.legend()
 plt.savefig('chi2_statistic.png')
-
-#print(pandas.crosstab(X[:, 5], X[:, 128]))
-
-#Benjamini, Y.&Hochberg, Y.(1995). Controlling the false discovery rate:a practical and powerful approach to multiple testing.Journal of the RoyalStatistical Society. Series B (Methodological), 289–300.
 
 sorted_features = np.argsort(ps, axis=1)
 M = 127

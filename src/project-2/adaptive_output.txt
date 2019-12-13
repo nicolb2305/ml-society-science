@@ -1,0 +1,223 @@
+---- Testing with only two treatments ----
+Setting up simulator
+Setting up policy
+Fitting historical data to the policy
+Preprocessing data
+Fitting treatment outcomes
+Running an online test
+Testing for  10000 steps
+Total reward: 4511.700000000213
+Final analysis of results
+             Given  Cured  Ratio  Features x with 5 largest coeffs
+Treatment 0:  1637      0   0.00                68  22 100 127  65
+Treatment 1:  8363   5348   0.64                86  80  56  83  66
+
+--- Testing with an additional experimental treatment and 126 gene silencing treatments ---
+Setting up simulator
+Setting up policy
+Fitting historical data to the policy
+Preprocessing data
+Fitting treatment outcomes
+Running an online test
+Testing for  10000 steps
+Total reward: 2673.000000000472
+Final analysis of results
+               Given  Cured  Ratio  Features x with 5 largest coeffs
+Treatment   0:     0      0    nan               116  68  22  81 127
+Treatment   1:  2943   2379   0.81                83  86 121  80  56
+Treatment   2:  1334   1153   0.86                37  79  11   1  68
+Treatment   3:    37      0   0.00                92  67  54  93   1
+Treatment   4:    36      0   0.00               126 112   5   1  66
+Treatment   5:    36      0   0.00               128 124  77  82 130
+Treatment   6:    32      0   0.00               113   2  84  38 116
+Treatment   7:    36      0   0.00                10  77   1  98  68
+Treatment   8:    36      0   0.00                57  20  84  77  64
+Treatment   9:    64      1   0.02               114 111 105  95  12
+Treatment  10:    34      0   0.00                89 110  86  29  18
+Treatment  11:   103      2   0.02               128 102   5  70   1
+Treatment  12:    34      0   0.00                 2  71  70  69 113
+Treatment  13:    36      0   0.00               129   2   1 112  81
+Treatment  14:    37      0   0.00                31 108  75  89  37
+Treatment  15:    36      0   0.00                12  61  33 128  83
+Treatment  16:    37      0   0.00                 4  82  31  60  90
+Treatment  17:    38      0   0.00                29 105  23   4  37
+Treatment  18:    39      0   0.00                45   1  41  78   2
+Treatment  19:    35      0   0.00                47 130  31 117 114
+Treatment  20:    34      0   0.00                52   7 127  18  71
+Treatment  21:    33      0   0.00                 1  75  47  31  90
+Treatment  22:   158     14   0.09                86 130  82  11 117
+Treatment  23:    36      0   0.00                10  42  93 126  91
+Treatment  24:    33      0   0.00               130  38  76  71 109
+Treatment  25:   104      3   0.03               124 126  23 119  19
+Treatment  26:    35      0   0.00                 4  35 108  96  33
+Treatment  27:    36      0   0.00                 3  75   4 107 129
+Treatment  28:    97      3   0.03                64  87  66  74  14
+Treatment  29:    37      0   0.00                31  76   4  93 108
+Treatment  30:    35      0   0.00                96  31  75  77  68
+Treatment  31:    37      0   0.00                71  29  35   5  43
+Treatment  32:    35      0   0.00                 3 116  31  71 130
+Treatment  33:    78      1   0.01               122  51  32  26   5
+Treatment  34:    36      0   0.00               129  71   5  47 113
+Treatment  35:    37      0   0.00                52  31  98  69   7
+Treatment  36:    37      0   0.00                57 130   1 129  18
+Treatment  37:    36      0   0.00                 1  16 105  55  29
+Treatment  38:    39      0   0.00               121  92  84  47   8
+Treatment  39:    36      0   0.00               121   2   8 130 107
+Treatment  40:    36      0   0.00                37 130  60   3 121
+Treatment  41:    35      0   0.00                16 110  14  34   5
+Treatment  42:    36      0   0.00                13  14  75 105  90
+Treatment  43:    38      0   0.00               100   5  92 112  60
+Treatment  44:    37      0   0.00                 2  84 123  68  31
+Treatment  45:    32      0   0.00                82  69   1  42 107
+Treatment  46:    35      0   0.00                10  18  37  11  71
+Treatment  47:    37      0   0.00                 5 129   2  82 126
+Treatment  48:    37      0   0.00               100  68  14  31  47
+Treatment  49:    36      0   0.00               113  81  39  52 121
+Treatment  50:    38      0   0.00               105  71  34  49  13
+Treatment  51:    36      0   0.00                 3   5 129  55  18
+Treatment  52:    38      0   0.00                64  31  81   2 120
+Treatment  53:    35      0   0.00                 2  52  68 105  71
+Treatment  54:    36      0   0.00                73  15   1   2 129
+Treatment  55:    35      0   0.00               106 130 109 114   2
+Treatment  56:    36      0   0.00               129 106   4  89  68
+Treatment  57:    36      0   0.00                77  18  42 113  31
+Treatment  58:    37      0   0.00               126 114 108 129  40
+Treatment  59:    40      0   0.00                67  70  38  88 127
+Treatment  60:    37      0   0.00                75   1   2  57  84
+Treatment  61:    34      0   0.00                 3 130  75  39  34
+Treatment  62:    35      0   0.00               114  16  81  33  71
+Treatment  63:    36      0   0.00                52 130 108  18  34
+Treatment  64:   106      4   0.04               107  61  72 124  12
+Treatment  65:    36      0   0.00                70  75  71  90   5
+Treatment  66:    35      0   0.00                69   2  11  76  80
+Treatment  67:    35      0   0.00                71  90  31   2  14
+Treatment  68:    36      0   0.00                 5   2 130  91  88
+Treatment  69:    38      0   0.00                93 130   3  76  85
+Treatment  70:    37      0   0.00                72  26 125 114   5
+Treatment  71:    38      0   0.00               116  31   5  67  75
+Treatment  72:   110      3   0.03               121  70 101  18   4
+Treatment  73:    38      0   0.00                 7  86   4  57 130
+Treatment  74:    59      2   0.03                75  92  67  74  18
+Treatment  75:    34      0   0.00               117  11  16  29  10
+Treatment  76:    37      0   0.00                 3  10  11  55  81
+Treatment  77:    36      0   0.00               105  79  55 114   1
+Treatment  78:    36      0   0.00                72  31  55  86 118
+Treatment  79:    35      0   0.00                71 107 128 108  70
+Treatment  80:    36      0   0.00               127   2   5  71  84
+Treatment  81:    37      0   0.00                86  47  79  84  31
+Treatment  82:    35      0   0.00                83 126   4  81  90
+Treatment  83:    34      0   0.00                11  89  71  86 109
+Treatment  84:    37      0   0.00                75  80  52  89   4
+Treatment  85:    36      0   0.00               126 107  42 109  18
+Treatment  86:   226     50   0.22                 2  90  40  48 112
+Treatment  87:    37      0   0.00                 5 114  18 116 130
+Treatment  88:    38      0   0.00                 5 111   2   8 120
+Treatment  89:    35      0   0.00                 4 112  52  81   2
+Treatment  90:    35      0   0.00                73  84  36  83  14
+Treatment  91:   154     14   0.09                24 125  35  97  74
+Treatment  92:   127      7   0.06                64  96  74 115   1
+Treatment  93:    36      0   0.00               127  30 129   5  77
+Treatment  94:    33      0   0.00                 8 108 117  42 107
+Treatment  95:    40      0   0.00               126  68  76   7 116
+Treatment  96:    38      0   0.00                26  92 103 129  69
+Treatment  97:    34      0   0.00                31  71 106 107  20
+Treatment  98:    38      0   0.00                60  37 129 126  52
+Treatment  99:    35      0   0.00               116  70  18  10  89
+Treatment 100:    36      0   0.00               128 106 102  47 129
+Treatment 101:    38      0   0.00                 8  38  58  31  88
+Treatment 102:    34      0   0.00                90  31  11  18  37
+Treatment 103:    34      0   0.00                43  75  90   1   5
+Treatment 104:    36      0   0.00                62  34  76  71  68
+Treatment 105:    37      0   0.00                31  75 126  84 130
+Treatment 106:    36      0   0.00                29  31 123   5  75
+Treatment 107:    36      0   0.00                93   1 114  16  89
+Treatment 108:    37      0   0.00               106   4  81  64   7
+Treatment 109:    34      0   0.00                 5  76  64 129  44
+Treatment 110:    36      0   0.00               115  15  69  57  81
+Treatment 111:   107     28   0.26                33  63  40  98  51
+Treatment 112:    38      0   0.00               124 123 108   8  98
+Treatment 113:    36      0   0.00                52  31  14  93 129
+Treatment 114:    35      0   0.00                18  20  80   2   3
+Treatment 115:    36      0   0.00                64 130  95 101  58
+Treatment 116:    36      0   0.00                18   2  71  61  77
+Treatment 117:    35      0   0.00                 8 120 106  71 116
+Treatment 118:    37      0   0.00                 1  94 117  56  29
+Treatment 119:    35      0   0.00                 1 105  90  31  47
+Treatment 120:    39      0   0.00                39   6  55  35  49
+Treatment 121:    37      0   0.00                27 126 107   5 101
+Treatment 122:    36      0   0.00                75  14  98   2 106
+Treatment 123:   109      5   0.05                72  47  46  68  32
+Treatment 124:    39      0   0.00                37  43 126  76  49
+Treatment 125:    38      0   0.00               130   2  84 114   3
+Treatment 126:    35      0   0.00                88   8  71  11   5
+Treatment 127:   115      4   0.03               106 108 116 117  41
+Treatment 128:    36      0   0.00                60  54  58  34 100
+
+Gene silencing treatment for gene   x9 had a success rate of 0.02.
+Gene silencing treatment for gene  x11 had a success rate of 0.02.
+Gene silencing treatment for gene  x22 had a success rate of 0.09.
+Gene silencing treatment for gene  x25 had a success rate of 0.03.
+Gene silencing treatment for gene  x28 had a success rate of 0.03.
+Gene silencing treatment for gene  x33 had a success rate of 0.01.
+Gene silencing treatment for gene  x64 had a success rate of 0.04.
+Gene silencing treatment for gene  x72 had a success rate of 0.03.
+Gene silencing treatment for gene  x74 had a success rate of 0.03.
+Gene silencing treatment for gene  x86 had a success rate of 0.22.
+Gene silencing treatment for gene  x91 had a success rate of 0.09.
+Gene silencing treatment for gene  x92 had a success rate of 0.06.
+Gene silencing treatment for gene x111 had a success rate of 0.26.
+Gene silencing treatment for gene x123 had a success rate of 0.05.
+Gene silencing treatment for gene x127 had a success rate of 0.03.
+
+Number of times a gene was among the 5 largest for an action, suggest looking at these genes more closely:
+Gene  x30: 23
+Gene   x4: 22
+Gene  x70: 20
+Gene  x74: 15
+Gene  x17: 15
+Gene x125: 12
+Gene   x3: 12
+Gene  x67: 11
+Gene  x83: 10
+Gene  x89: 10
+Gene  x80: 10
+Gene x113: 10
+Gene x107: 9
+Gene  x51: 9
+Gene x115: 9
+Gene  x46: 9
+Gene  x10: 9
+Gene x106: 9
+Gene x104: 8
+Gene  x75: 8
+Gene x105: 8
+Gene  x13: 8
+Gene  x36: 8
+Gene   x7: 8
+Gene  x69: 7
+Gene  x76: 7
+Gene  x63: 7
+Gene  x85: 7
+Gene  x88: 7
+Gene  x28: 7
+Gene  x54: 6
+Gene  x92: 6
+Gene  x68: 6
+Gene x116: 6
+Gene x120: 6
+Gene   x9: 6
+Gene  x33: 6
+Gene x111: 5
+Gene x126: 5
+Gene  x41: 5
+Gene  x56: 5
+Gene  x81: 5
+Gene x112: 5
+Gene   x6: 5
+Gene  x15: 5
+Gene  x97: 5
+Gene x127: 5
+Gene  x59: 5
+Gene  x91: 5
+
+Using our models the old treatment 2 is better than the new treatment 1 with curing rations of 0.86 and 0.81.

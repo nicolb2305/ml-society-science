@@ -1,0 +1,20 @@
+Symptoms contingency in full data set:
+129     0    1
+128
+0    4832  549
+1    4195  424
+
+Symptoms present in cluster 0:
+129     0    1
+128
+0    2912  389
+1    1676  220
+
+Chi square test between symptoms contingency in all data and cluster 0: p=4.214e-47
+Symptoms present in cluster 1:
+129     0    1
+128
+0    1920  160
+1    2519  204
+
+Chi square test between symptoms contingency in all data and cluster 1: p=5.967e-51

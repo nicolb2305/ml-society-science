@@ -1,0 +1,17 @@
+Action-outcome contingency for all the data:
+outcome         0         1
+action
+0        0.991041  0.008959
+1        0.411662  0.588338
+
+Action-outcome contingency for cluster 0:
+outcome         0         1
+action
+0        0.998072  0.001928
+1        0.490891  0.509109
+
+Action-outcome contingency for cluster 1:
+outcome         0         1
+action
+0        0.982827  0.017173
+1        0.351908  0.648092

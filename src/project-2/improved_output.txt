@@ -1,0 +1,9 @@
+---- Testing with only two treatments ----
+Setting up simulator
+Setting up policy
+Fitting historical data to the policy
+Fitting treatment outcomes
+Running an online test
+Testing for  1000 steps
+Total reward: 425.9999999999928
+Final analysis of results

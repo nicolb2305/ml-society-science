@@ -1,5 +1,8 @@
 import numpy as np
 import pandas
+
+np.random.seed(123)
+
 def default_reward_function(action, outcome):
     return -0.1 * (action!= 0) + outcome
 
@@ -14,6 +17,7 @@ def test_policy(generator, policy, reward_function, T):
         r = reward_function(a, y)
         u += r
         policy.observe(x, a, y)
+        #print(t) if t%100 == 0 else None
         #print(a)
         #print("x: ", x, "a: ", a, "y:", y, "r:", r)
     return u
@@ -27,8 +31,8 @@ labels = features[:,128] + features[:,129]*2
 import data_generation
 import random_recommender
 policy_factory = random_recommender.RandomRecommender
-import adaptive_recommender
-policy_factory = adaptive_recommender.AdaptiveRecommender
+import improved_recommender
+policy_factory = improved_recommender.ImprovedRecommender
 
 ## First test with the same number of treatments
 print("---- Testing with only two treatments ----")

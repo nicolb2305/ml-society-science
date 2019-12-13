@@ -2,22 +2,11 @@ from policy import Policy
 import numpy as np
 import pandas
 from sklearn.linear_model import LogisticRegression
+from random_recommender import RandomRecommender
 
-class ImprovedRecommender:
-    def __init__(self, n_actions, n_outcomes):
-        self.n_actions = n_actions
-        self.n_outcomes = n_outcomes
-        self.reward = self._default_reward
-
+class ImprovedRecommender(RandomRecommender):
     def _default_reward(self, action, outcome):
-        return -0.1*action + outcome
-
-    def set_reward(self, reward):
-        self.reward = reward
-
-    def fit_data(self, data):
-        print("Preprocessing data")
-        return None
+        return -0.1*(action != 0) + outcome
 
     def fit_treatment_outcome(self, data, actions, outcome):
         print("Fitting treatment outcomes")
@@ -36,7 +25,7 @@ class ImprovedRecommender:
             recommendations = np.zeros(actions.size)
             for i in range(actions.size):
                 recommendations[i] = policy.get_best_action(data.iloc[i], [self.predict_proba(data.iloc[i], a) for a in range(self.n_actions)])
-            return np.sum(self.reward(recommendations, outcome) * recommendations / actions.map(pi_hat))
+            return np.sum(self.reward(recommendations, outcome) * recommendations / actions.map(pi_hat))/len(actions)
 
     def predict_proba(self, data, treatment):
         return self.models[treatment].predict_proba(pandas.DataFrame(data).transpose())
@@ -45,13 +34,7 @@ class ImprovedRecommender:
         measurable_effect_proba = []
         for action in range(self.n_actions):
             measurable_effect_proba.append(self.predict_proba(user_data, action)[0][1])
-        return measurable_effect_proba/np.sum(measurable_effect_proba)
-
-    def recommend(self, user_data):
-        return np.argmax(self.get_action_probabilities(user_data))
-
-    def observe(self, user, action, outcome):
-        return None
-
-    def final_analysis(self):
-        return None
+        probas = measurable_effect_proba
+        return_probas = np.zeros(self.n_actions)
+        return_probas[np.argmax(probas)] = 1
+        return return_probas
